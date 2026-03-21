@@ -1,9 +1,10 @@
 
 import { NextResponse } from 'next/server';
-import db from '../../../lib/db';
+import { dbPromise } from '../../../lib/db';
 
 export async function GET() {
   try {
+    const db = await dbPromise;
     const bills = db.prepare('SELECT * FROM bills ORDER BY id DESC').all();
     
     // Fetch items for each bill
@@ -21,6 +22,7 @@ export async function GET() {
 
 export async function POST(req) {
   try {
+    const db = await dbPromise;
     const body = await req.json();
     
     // Calculate total amount
@@ -37,7 +39,7 @@ export async function POST(req) {
       new Date().toISOString()
     );
     
-    const billId = billResult.lastInsertRowid;
+    const billId = billResult.lastInsertRowid || billResult.lastID || 1;
     
     // Insert items
     if (body.items && body.items.length > 0) {
@@ -59,6 +61,7 @@ export async function POST(req) {
     
     return NextResponse.json({ success: true, billId });
   } catch (error) {
+    console.error('POST /api/bills error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
