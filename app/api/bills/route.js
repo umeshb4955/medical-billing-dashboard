@@ -110,11 +110,3 @@ export async function POST(req) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-    }
-    
-    return NextResponse.json({ success: true, billId });
-  } catch (error) {
-    console.error('POST /api/bills error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
