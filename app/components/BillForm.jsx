@@ -56,14 +56,17 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
   const totalAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle sx={{ color: '#e0e7ff', fontWeight: 700, backgroundColor: 'rgba(30, 27, 75, 0.95)' }}>
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth PaperProps={{ sx: { m: 1 } }}>
+      <DialogTitle sx={{ color: '#e0e7ff', fontWeight: 700, backgroundColor: 'rgba(30, 27, 75, 0.95)', fontSize: { xs: '18px', sm: '20px' } }}>
         {editingBill ? 'Edit Bill' : 'Add New Bill'}
       </DialogTitle>
       <DialogContent sx={{ 
         pt: 3, 
         backgroundColor: 'rgba(30, 27, 75, 0.95)',
-        backgroundImage: 'linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(55, 48, 120, 0.95) 100%)'
+        backgroundImage: 'linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(55, 48, 120, 0.95) 100%)',
+        maxHeight: { xs: '70vh', sm: '80vh' },
+        overflowY: 'auto',
+        p: { xs: 1.5, sm: 3 }
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <TextField
@@ -72,7 +75,8 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
             value={patientName}
             onChange={(e) => setPatientName(e.target.value)}
             disabled={isLoading}
-            InputLabelProps={{ style: { color: '#c7d2fe' } }}
+            size="small"
+            InputLabelProps={{ style: { color: '#c7d2fe', fontSize: '14px' } }}
             sx={{
               '& .MuiOutlinedInput-root': {
                 color: '#e0e7ff',
@@ -80,6 +84,7 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
                 '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
                 '&.Mui-focused fieldset': { borderColor: '#3b82f6' },
               },
+              '& .MuiOutlinedInput-input': { fontSize: { xs: '14px', sm: '16px' } }
             }}
           />
 
@@ -91,12 +96,14 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
             onChange={(e) => setStatus(e.target.value)}
             disabled={isLoading}
             SelectProps={{ native: true }}
+            size="small"
             InputLabelProps={{ style: { color: '#c7d2fe' } }}
             sx={{
               '& .MuiOutlinedInput-root': {
                 color: '#e0e7ff',
                 '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
               },
+              '& .MuiOutlinedInput-input': { fontSize: { xs: '14px', sm: '16px' } }
             }}
           >
             <option value="Pending">Pending</option>
@@ -107,13 +114,20 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
           <div style={{ marginTop: '20px', borderTop: '1px solid rgba(255, 255, 255, 0.2)', paddingTop: '15px' }}>
             <h3 style={{ color: '#c7d2fe', marginBottom: '15px', fontSize: '14px', margin: 0 }}>Add Medicines</h3>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr 0.5fr', gap: '10px', marginBottom: '15px', marginTop: '10px' }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))',
+              gap: '8px',
+              marginBottom: '15px', 
+              marginTop: '10px' 
+            }}>
               <TextField
                 size="small"
-                label="Medicine Name"
+                label="Medicine"
                 value={formItem.medicineName}
                 onChange={(e) => setFormItem({ ...formItem, medicineName: e.target.value })}
                 disabled={isLoading}
+                sx={{ gridColumn: 'span 2', sm: { gridColumn: 'span 1' } }}
                 InputLabelProps={{ style: { color: '#c7d2fe', fontSize: '12px' } }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
@@ -126,7 +140,7 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
               
               <TextField
                 size="small"
-                label="Quantity"
+                label="Qty"
                 type="number"
                 value={formItem.quantity}
                 onChange={(e) => setFormItem({ ...formItem, quantity: parseInt(e.target.value) || 1 })}
@@ -159,7 +173,7 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
               
               <TextField
                 size="small"
-                label="Price (₹)"
+                label="Price"
                 type="number"
                 value={formItem.price}
                 onChange={(e) => setFormItem({ ...formItem, price: parseFloat(e.target.value) || 0 })}
@@ -183,6 +197,7 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
                   background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
                   fontSize: '12px',
                   padding: '8px',
+                  minWidth: 'auto',
                 }}
               >
                 <Plus size={16} />
@@ -192,34 +207,34 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
 
           {/* Items Table */}
           {items.length > 0 && (
-            <Paper sx={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-              <Table size="small">
+            <Paper sx={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', overflowX: 'auto' }}>
+              <Table size="small" sx={{ fontSize: { xs: '12px', sm: '14px' } }}>
                 <TableHead>
                   <TableRow sx={{ backgroundColor: 'rgba(59, 130, 246, 0.1)' }}>
-                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold' }}>Medicine</TableCell>
-                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'center' }}>Qty</TableCell>
-                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'center' }}>Unit</TableCell>
-                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'right' }}>Price</TableCell>
-                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'right' }}>Amount</TableCell>
-                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'center' }}>Action</TableCell>
+                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', p: '8px' }}>Medicine</TableCell>
+                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'center', p: '8px' }}>Qty</TableCell>
+                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'center', p: '8px', display: { xs: 'none', sm: 'table-cell' } }}>Unit</TableCell>
+                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'right', p: '8px' }}>Price</TableCell>
+                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'right', p: '8px' }}>Amount</TableCell>
+                    <TableCell sx={{ color: '#c7d2fe', fontSize: '11px', fontWeight: 'bold', textAlign: 'center', p: '8px' }}>X</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {items.map((item, idx) => (
                     <TableRow key={idx} sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                      <TableCell sx={{ color: '#e0e7ff', fontSize: '12px' }}>{item.medicineName}</TableCell>
-                      <TableCell sx={{ color: '#e0e7ff', fontSize: '12px', textAlign: 'center' }}>{item.quantity}</TableCell>
-                      <TableCell sx={{ color: '#e0e7ff', fontSize: '12px', textAlign: 'center' }}>{item.unit}</TableCell>
-                      <TableCell sx={{ color: '#e0e7ff', fontSize: '12px', textAlign: 'right' }}>₹{item.price.toFixed(2)}</TableCell>
-                      <TableCell sx={{ color: '#e0e7ff', fontSize: '12px', fontWeight: 'bold', textAlign: 'right' }}>
+                      <TableCell sx={{ color: '#e0e7ff', fontSize: '11px', p: '8px' }}>{item.medicineName}</TableCell>
+                      <TableCell sx={{ color: '#e0e7ff', fontSize: '11px', textAlign: 'center', p: '8px' }}>{item.quantity}</TableCell>
+                      <TableCell sx={{ color: '#e0e7ff', fontSize: '11px', textAlign: 'center', p: '8px', display: { xs: 'none', sm: 'table-cell' } }}>{item.unit}</TableCell>
+                      <TableCell sx={{ color: '#e0e7ff', fontSize: '11px', textAlign: 'right', p: '8px' }}>₹{item.price.toFixed(2)}</TableCell>
+                      <TableCell sx={{ color: '#e0e7ff', fontSize: '11px', fontWeight: 'bold', textAlign: 'right', p: '8px' }}>
                         ₹{(item.price * item.quantity).toFixed(2)}
                       </TableCell>
-                      <TableCell sx={{ textAlign: 'center' }}>
+                      <TableCell sx={{ textAlign: 'center', p: '8px' }}>
                         <IconButton
                           size="small"
                           onClick={() => handleRemoveItem(idx)}
                           disabled={isLoading}
-                          sx={{ color: '#ef4444' }}
+                          sx={{ color: '#ef4444', p: '4px' }}
                         >
                           <Trash2 size={14} />
                         </IconButton>
@@ -227,8 +242,8 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
                     </TableRow>
                   ))}
                   <TableRow sx={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', fontWeight: 'bold' }}>
-                    <TableCell colSpan="4" sx={{ color: '#c7d2fe', textAlign: 'right', fontSize: '12px' }}>Total Amount:</TableCell>
-                    <TableCell sx={{ color: '#3b82f6', fontSize: '13px', fontWeight: 'bold', textAlign: 'right' }}>
+                    <TableCell colSpan="4" sx={{ color: '#c7d2fe', textAlign: 'right', fontSize: '11px', p: '8px' }}>Total: </TableCell>
+                    <TableCell sx={{ color: '#3b82f6', fontSize: '12px', fontWeight: 'bold', textAlign: 'right', p: '8px' }}>
                       ₹{totalAmount.toFixed(2)}
                     </TableCell>
                     <TableCell></TableCell>
@@ -239,8 +254,8 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
           )}
         </div>
       </DialogContent>
-      <DialogActions sx={{ backgroundColor: 'rgba(30, 27, 75, 0.95)', p: 2, gap: 1 }}>
-        <Button onClick={onClose} disabled={isLoading} sx={{ color: '#c7d2fe' }}>
+      <DialogActions sx={{ backgroundColor: 'rgba(30, 27, 75, 0.95)', p: { xs: 1, sm: 2 }, gap: 1, flexDirection: { xs: 'column-reverse', sm: 'row' } }}>
+        <Button onClick={onClose} disabled={isLoading} sx={{ color: '#c7d2fe', width: { xs: '100%', sm: 'auto' } }}>
           Cancel
         </Button>
         <Button
@@ -251,6 +266,7 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
             background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
             color: 'white',
             fontWeight: 600,
+            width: { xs: '100%', sm: 'auto' },
             display: 'flex',
             alignItems: 'center',
             gap: '8px'

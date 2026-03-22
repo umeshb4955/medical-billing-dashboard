@@ -22,6 +22,25 @@ body {
   overflow-x: hidden;
 }
 
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Ensure proper touch targets on mobile */
+@media (hover: none) and (pointer: coarse) {
+  button, a, input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;
@@ -68,4 +87,98 @@ button:active {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+}
+
+/* Responsive text utilities */
+@layer utilities {
+  @media (max-width: 640px) {
+    .text-responsive-h1 {
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+    }
+    
+    .text-responsive-h2 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+    
+    .text-responsive-h3 {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .text-responsive-h1 {
+      font-size: 2.25rem;
+      line-height: 2.5rem;
+    }
+    
+    .text-responsive-h2 {
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+    }
+    
+    .text-responsive-h3 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .text-responsive-h1 {
+      font-size: 3rem;
+      line-height: 3.5rem;
+    }
+    
+    .text-responsive-h2 {
+      font-size: 2.25rem;
+      line-height: 2.5rem;
+    }
+    
+    .text-responsive-h3 {
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+    }
+  }
+}
+
+/* Mobile-friendly form inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+  font-size: 16px; /* Prevents zoom on iOS */
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+/* Prevent layout shift on scroll */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Modal improvements for mobile */
+@media (max-width: 640px) {
+  .MuiDialog-paper {
+    margin: 16px !important;
+    max-height: calc(100vh - 32px) !important;
+  }
+}
+
+/* DataGrid mobile adjustments */
+@media (max-width: 768px) {
+  .MuiDataGrid-root {
+    font-size: 12px !important;
+  }
+  
+  .MuiDataGrid-columnHeader {
+    padding: 4px !important;
+  }
+  
+  .MuiDataGrid-cell {
+    padding: 4px !important;
+  }
 }

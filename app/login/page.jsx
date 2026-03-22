@@ -51,28 +51,28 @@ export default function LoginPage() {
       </div>
 
       {/* Login Card */}
-      <div className="relative z-10 w-full max-w-md">
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 md:p-10">
+      <div className="relative z-10 w-full max-w-sm px-4 xs:px-0">
+        <div className="bg-white/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8 md:p-10">
           {/* Logo Section */}
-          <div className="flex justify-center mb-8">
-            <div className="p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg">
-              <FileText className="text-white" size={40} />
+          <div className="flex justify-center mb-6 sm:mb-8">
+            <div className="p-3 sm:p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl shadow-lg">
+              <FileText className="text-white" size={32} sm:size={40} />
             </div>
           </div>
 
           {/* Title */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-1 sm:mb-2">
               Medical Billing
             </h1>
-            <p className="text-purple-200 text-sm">Dashboard Login</p>
+            <p className="text-sm text-purple-200">Dashboard Login</p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Username Input */}
             <div>
-              <label className="block text-sm font-semibold text-purple-200 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-purple-200 mb-2">
                 Username
               </label>
               <input
@@ -80,14 +80,14 @@ export default function LoginPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Enter username"
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 text-sm sm:text-base"
                 disabled={isLoading}
               />
             </div>
 
             {/* Password Input */}
             <div>
-              <label className="block text-sm font-semibold text-purple-200 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-purple-200 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -96,7 +96,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 text-sm sm:text-base pr-10"
                   disabled={isLoading}
                 />
                 <button

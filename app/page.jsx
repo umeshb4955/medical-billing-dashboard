@@ -201,45 +201,50 @@ export default function Dashboard() {
       </div>
 
       <div className="relative z-10">
-        <div className="pt-12 px-4 sm:px-6 lg:px-8">
+        <div className="pt-6 sm:pt-8 lg:pt-12 px-3 sm:px-4 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-12 animate-fade-in">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl">
-                    <FileText className="text-white" size={32} />
+            <div className="mb-8 sm:mb-12 animate-fade-in">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
+                <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                  <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg sm:rounded-xl">
+                    <FileText className="text-white" size={24} sm:size={32} />
                   </div>
-                  <div>
-                    <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  <div className="min-w-0">
+                    <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent truncate">
                       Medical Billing
                     </h1>
-                    <p className="text-purple-200">Manage your healthcare finances</p>
+                    <p className="text-xs sm:text-sm text-purple-200 hidden sm:block">Manage your healthcare finances</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
                   <button
                     onClick={handleAddClick}
-                    className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg font-semibold"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 sm:px-6 py-2 sm:py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg font-semibold text-xs sm:text-sm whitespace-nowrap"
                   >
-                    <Plus size={20} /> Add Bill
+                    <Plus size={16} className="sm:hidden" />
+                    <Plus size={20} className="hidden sm:inline" /> 
+                    <span className="hidden xs:inline">Add Bill</span>
+                    <span className="sm:hidden">Add</span>
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg font-semibold"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 sm:px-6 py-2 sm:py-3 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg font-semibold text-xs sm:text-sm whitespace-nowrap"
                   >
-                    <LogOut size={20} /> Logout
+                    <LogOut size={16} className="sm:hidden" />
+                    <LogOut size={20} className="hidden sm:inline" /> 
+                    <span className="hidden xs:inline">Logout</span>
                   </button>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-8 sm:mb-12">
               {isLoading ? (
                 <>
-                  <Skeleton variant="rectangular" height={140} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-                  <Skeleton variant="rectangular" height={140} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-                  <Skeleton variant="rectangular" height={140} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-                  <Skeleton variant="rectangular" height={140} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                  <Skeleton variant="rectangular" height={120} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                  <Skeleton variant="rectangular" height={120} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                  <Skeleton variant="rectangular" height={120} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)', display: { xs: 'none', lg: 'block' } }} />
+                  <Skeleton variant="rectangular" height={120} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)', display: { xs: 'none', lg: 'block' } }} />
                 </>
               ) : (
                 <>
@@ -251,54 +256,62 @@ export default function Dashboard() {
               )}
             </div>
 
-            <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-0 mb-12 animate-fade-in overflow-hidden">
-              <div className="px-8 py-6 border-b border-white/10 bg-gradient-to-r from-blue-500/20 to-purple-500/20">
-                <div className="flex items-center gap-3">
-                  <TrendingUp className="text-blue-400" size={28} />
-                  <h2 className="text-2xl font-bold text-white">Bills Management</h2>
+            <div className="bg-white/10 backdrop-blur-xl rounded-lg sm:rounded-2xl shadow-2xl border border-white/20 p-0 mb-8 sm:mb-12 animate-fade-in overflow-hidden">
+              <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-white/10 bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <TrendingUp className="text-blue-400 flex-shrink-0" size={20} sm:size={28} />
+                  <h2 className="text-lg sm:text-2xl font-bold text-white truncate">Bills Management</h2>
                 </div>
               </div>
 
               {isLoading ? (
-                <Box sx={{ height: 600, width: '100%', p: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 2 }}>
-                  <CircularProgress size={60} sx={{ color: '#3b82f6' }} />
-                  <p style={{ color: '#c7d2fe', fontSize: '16px', fontWeight: '500' }}>Loading bills...</p>
-                  <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <Skeleton variant="rectangular" height={40} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-                    <Skeleton variant="rectangular" height={60} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-                    <Skeleton variant="rectangular" height={60} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-                    <Skeleton variant="rectangular" height={60} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-                  </div>
+                <Box sx={{ height: 300, width: '100%', p: 1.5, sm: { p: 2 }, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 2 }}>
+                  <CircularProgress size={50} sx={{ color: '#3b82f6' }} />
+                  <p style={{ color: '#c7d2fe', fontSize: '14px', fontWeight: '500' }}>Loading bills...</p>
+                </Box>
+              ) : bills.length === 0 ? (
+                <Box sx={{ p: 3, textAlign: 'center', color: '#c7d2fe' }}>
+                  <p style={{ fontSize: '16px', marginBottom: '8px' }}>No bills yet</p>
+                  <p style={{ fontSize: '14px', color: '#a5b4fc' }}>Click "Add Bill" to create your first bill</p>
                 </Box>
               ) : (
-                <Box sx={{ height: 600, width: '100%', p: 2 }}>
+                <Box sx={{ 
+                  width: '100%', 
+                  p: 1,
+                  sm: { p: 2 },
+                  overflowX: 'auto',
+                  height: 'auto',
+                  maxHeight: '600px'
+                }}>
                   <DataGrid
                     rows={bills}
                     columns={columns}
-                    pageSizeOptions={[10, 25, 50]}
-                    initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+                    pageSizeOptions={[5, 10, 25]}
+                    initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
                     slots={{ toolbar: GridToolbar }}
                     slotProps={{ toolbar: { showQuickFilter: true } }}
                     disableSelectionOnClick
+                    density="compact"
                     sx={{
                       backgroundColor: 'transparent',
                       color: '#e0e7ff',
+                      fontSize: '12px',
+                      sm: { fontSize: '14px' },
                       '& .MuiDataGrid-columnHeader': {
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         color: '#c7d2fe',
                         fontWeight: 700,
                         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                        fontSize: '11px',
+                        sm: { fontSize: '13px' },
                       },
                       '& .MuiDataGrid-row': {
                         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
                         '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' },
-                        '&.Mui-selected': { backgroundColor: 'transparent !important' },
-                        '&.Mui-selected:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1) !important' },
                       },
-                      '& .MuiDataGrid-cell': { borderRight: '1px solid rgba(255, 255, 255, 0.05)' },
-                      '& .MuiTablePagination-root': { color: '#e0e7ff' },
-                      '& .MuiIconButton-root': { color: '#e0e7ff' },
-                      '& .MuiInputBase-root': { color: '#e0e7ff', borderColor: 'rgba(255, 255, 255, 0.2)' },
+                      '& .MuiDataGrid-cell': { borderRight: '1px solid rgba(255, 255, 255, 0.05)', p: '8px 4px', sm: { p: '8px' } },
+                      '& .MuiTablePagination-root': { color: '#e0e7ff', fontSize: '12px', sm: { fontSize: '14px' } },
+                      '& .MuiIconButton-root': { color: '#e0e7ff', p: '4px' },
                     }}
                   />
                 </Box>
