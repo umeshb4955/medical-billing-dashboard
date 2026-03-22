@@ -3,7 +3,6 @@
   "devCommand": "next dev",
   "installCommand": "npm install --omit=optional",
   "framework": "nextjs",
-  "nodeVersion": "20.x",
   "env": {
     "NODE_ENV": "production"
   }
