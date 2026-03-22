@@ -16,10 +16,19 @@ export default function Dashboard() {
   const [openDialog, setOpenDialog] = useState(false);
   const [editingBill, setEditingBill] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const invoiceRef = useRef(null);
   const [selectedBillForInvoice, setSelectedBillForInvoice] = useState(null);
   const [medicineModalOpen, setMedicineModalOpen] = useState(false);
   const [selectedBillMedicines, setSelectedBillMedicines] = useState(null);
+
+  // Check mobile width
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Check authentication on mount
   useEffect(() => {
@@ -207,7 +216,7 @@ export default function Dashboard() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
                 <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                   <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg sm:rounded-xl">
-                    <FileText className="text-white" size={24} sm:size={32} />
+                    <FileText className="text-white" size={isMobile ? 24 : 32} />
                   </div>
                   <div className="min-w-0">
                     <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent truncate">
@@ -259,7 +268,7 @@ export default function Dashboard() {
             <div className="bg-white/10 backdrop-blur-xl rounded-lg sm:rounded-2xl shadow-2xl border border-white/20 p-0 mb-8 sm:mb-12 animate-fade-in overflow-hidden">
               <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-white/10 bg-gradient-to-r from-blue-500/20 to-purple-500/20">
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <TrendingUp className="text-blue-400 flex-shrink-0" size={20} sm:size={28} />
+                  <TrendingUp className="text-blue-400 flex-shrink-0" size={isMobile ? 20 : 28} />
                   <h2 className="text-lg sm:text-2xl font-bold text-white truncate">Bills Management</h2>
                 </div>
               </div>

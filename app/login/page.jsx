@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FileText, LogIn } from 'lucide-react';
 
@@ -10,6 +10,14 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,7 +64,7 @@ export default function LoginPage() {
           {/* Logo Section */}
           <div className="flex justify-center mb-6 sm:mb-8">
             <div className="p-3 sm:p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl shadow-lg">
-              <FileText className="text-white" size={32} sm:size={40} />
+              <FileText className="text-white" size={isMobile ? 32 : 40} />
             </div>
           </div>
 
