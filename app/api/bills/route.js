@@ -6,6 +6,15 @@ export async function GET() {
   try {
     const db = await dbPromise;
     
+    // Check if database initialized properly
+    if (!db) {
+      return NextResponse.json({
+        error: 'Database not initialized',
+        message: 'Please set DATABASE_URL environment variable in Vercel project settings',
+        details: 'DATABASE_URL should be your MongoDB Atlas connection string'
+      }, { status: 500 });
+    }
+    
     // For MongoDB
     if (db.collection) {
       const bills = await db.collection('bills').find({}).toArray();
@@ -46,6 +55,15 @@ export async function POST(req) {
   try {
     const db = await dbPromise;
     const body = await req.json();
+    
+    // Check if database initialized properly
+    if (!db) {
+      return NextResponse.json({
+        error: 'Database not initialized',
+        message: 'Please set DATABASE_URL environment variable in Vercel project settings',
+        details: 'DATABASE_URL should be your MongoDB Atlas connection string'
+      }, { status: 500 });
+    }
     
     // Calculate total amount
     const totalAmount = body.items?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;

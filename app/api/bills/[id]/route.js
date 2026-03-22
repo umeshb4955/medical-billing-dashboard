@@ -7,6 +7,15 @@ export async function PUT(req, { params }) {
     const db = await dbPromise;
     const id = params.id;
     const body = await req.json();
+    
+    // Check if database initialized properly
+    if (!db) {
+      return NextResponse.json({
+        error: 'Database not initialized',
+        message: 'Please set DATABASE_URL environment variable in Vercel project settings',
+        details: 'DATABASE_URL should be your MongoDB Atlas connection string'
+      }, { status: 500 });
+    }
 
     // Calculate total amount
     const totalAmount = body.items?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;
@@ -94,6 +103,15 @@ export async function DELETE(req, { params }) {
   try {
     const db = await dbPromise;
     const id = params.id;
+    
+    // Check if database initialized properly
+    if (!db) {
+      return NextResponse.json({
+        error: 'Database not initialized',
+        message: 'Please set DATABASE_URL environment variable in Vercel project settings',
+        details: 'DATABASE_URL should be your MongoDB Atlas connection string'
+      }, { status: 500 });
+    }
     
     // For MongoDB
     if (db.collection) {
