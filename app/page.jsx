@@ -3,13 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { DollarSign, FileText, Clock, CheckCircle, TrendingUp, Trash2, Edit2, Plus, Download, Printer, Eye, X, LogOut } from 'lucide-react';
 import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid';
-import { Box, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Button, Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@mui/material';
+import { Box, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Button, Table, TableBody, TableCell, TableHead, TableRow, Paper, Skeleton, CircularProgress } from '@mui/material';
 import { InvoiceTemplate } from './components/InvoiceTemplate';
 import { BillFormDialog } from './components/BillForm';
 
 export default function Dashboard() {
   const router = useRouter();
   const [bills, setBills] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [pdfUtils, setPdfUtils] = useState(null);
   const [stats, setStats] = useState({ total: 0, totalAmount: 0, pending: 0, paid: 0 });
   const [openDialog, setOpenDialog] = useState(false);
@@ -30,6 +31,7 @@ export default function Dashboard() {
 
   const loadBills = async () => {
     try {
+      setIsLoading(true);
       const res = await fetch('/api/bills');
       if (!res.ok) {
         console.error('Failed to fetch bills:', res.status, res.statusText);
@@ -45,6 +47,8 @@ export default function Dashboard() {
     } catch (error) {
       console.error('Error loading bills:', error);
       setBills([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -230,10 +234,21 @@ export default function Dashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              <StatCard icon={FileText} label="Total Bills" value={stats.total} color="bg-blue-500" bgColor="bg-white/10 backdrop-blur-xl border border-white/20" />
-              <StatCard icon={DollarSign} label="Total Revenue" value={`₹${stats.totalAmount.toFixed(0)}`} color="bg-green-500" bgColor="bg-white/10 backdrop-blur-xl border border-white/20" />
-              <StatCard icon={Clock} label="Pending" value={stats.pending} color="bg-yellow-500" bgColor="bg-white/10 backdrop-blur-xl border border-white/20" />
-              <StatCard icon={CheckCircle} label="Completed" value={stats.paid} color="bg-green-500" bgColor="bg-white/10 backdrop-blur-xl border border-white/20" />
+              {isLoading ? (
+                <>
+                  <Skeleton variant="rectangular" height={140} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                  <Skeleton variant="rectangular" height={140} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                  <Skeleton variant="rectangular" height={140} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                  <Skeleton variant="rectangular" height={140} sx={{ borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                </>
+              ) : (
+                <>
+                  <StatCard icon={FileText} label="Total Bills" value={stats.total} color="bg-blue-500" bgColor="bg-white/10 backdrop-blur-xl border border-white/20" />
+                  <StatCard icon={DollarSign} label="Total Revenue" value={`₹${stats.totalAmount.toFixed(0)}`} color="bg-green-500" bgColor="bg-white/10 backdrop-blur-xl border border-white/20" />
+                  <StatCard icon={Clock} label="Pending" value={stats.pending} color="bg-yellow-500" bgColor="bg-white/10 backdrop-blur-xl border border-white/20" />
+                  <StatCard icon={CheckCircle} label="Completed" value={stats.paid} color="bg-green-500" bgColor="bg-white/10 backdrop-blur-xl border border-white/20" />
+                </>
+              )}
             </div>
 
             <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-0 mb-12 animate-fade-in overflow-hidden">
@@ -244,44 +259,59 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <Box sx={{ height: 600, width: '100%', p: 2 }}>
-                <DataGrid
-                  rows={bills}
-                  columns={columns}
-                  pageSizeOptions={[10, 25, 50]}
-                  initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
-                  slots={{ toolbar: GridToolbar }}
-                  slotProps={{ toolbar: { showQuickFilter: true } }}
-                  disableSelectionOnClick
-                  sx={{
-                    backgroundColor: 'transparent',
-                    color: '#e0e7ff',
-                    '& .MuiDataGrid-columnHeader': {
-                      backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                      color: '#c7d2fe',
-                      fontWeight: 700,
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                    },
-                    '& .MuiDataGrid-row': {
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                      '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' },
-                      '&.Mui-selected': { backgroundColor: 'transparent !important' },
-                      '&.Mui-selected:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1) !important' },
-                    },
-                    '& .MuiDataGrid-cell': { borderRight: '1px solid rgba(255, 255, 255, 0.05)' },
-                    '& .MuiTablePagination-root': { color: '#e0e7ff' },
-                    '& .MuiIconButton-root': { color: '#e0e7ff' },
-                    '& .MuiInputBase-root': { color: '#e0e7ff', borderColor: 'rgba(255, 255, 255, 0.2)' },
-                  }}
-                />
-              </Box>
+              {isLoading ? (
+                <Box sx={{ height: 600, width: '100%', p: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 2 }}>
+                  <CircularProgress size={60} sx={{ color: '#3b82f6' }} />
+                  <p style={{ color: '#c7d2fe', fontSize: '16px', fontWeight: '500' }}>Loading bills...</p>
+                  <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <Skeleton variant="rectangular" height={40} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                    <Skeleton variant="rectangular" height={60} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                    <Skeleton variant="rectangular" height={60} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                    <Skeleton variant="rectangular" height={60} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+                  </div>
+                </Box>
+              ) : (
+                <Box sx={{ height: 600, width: '100%', p: 2 }}>
+                  <DataGrid
+                    rows={bills}
+                    columns={columns}
+                    pageSizeOptions={[10, 25, 50]}
+                    initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+                    slots={{ toolbar: GridToolbar }}
+                    slotProps={{ toolbar: { showQuickFilter: true } }}
+                    disableSelectionOnClick
+                    sx={{
+                      backgroundColor: 'transparent',
+                      color: '#e0e7ff',
+                      '& .MuiDataGrid-columnHeader': {
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        color: '#c7d2fe',
+                        fontWeight: 700,
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                      },
+                      '& .MuiDataGrid-row': {
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' },
+                        '&.Mui-selected': { backgroundColor: 'transparent !important' },
+                        '&.Mui-selected:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1) !important' },
+                      },
+                      '& .MuiDataGrid-cell': { borderRight: '1px solid rgba(255, 255, 255, 0.05)' },
+                      '& .MuiTablePagination-root': { color: '#e0e7ff' },
+                      '& .MuiIconButton-root': { color: '#e0e7ff' },
+                      '& .MuiInputBase-root': { color: '#e0e7ff', borderColor: 'rgba(255, 255, 255, 0.2)' },
+                    }}
+                  />
+                </Box>
+              )}
             </div>
           </div>
         </div>
 
         <BillFormDialog 
           open={openDialog} 
-          onClose={() => setOpenDialog(false)} 
+          onClose={() => {
+            if (!isSaving) setOpenDialog(false);
+          }}
           onSave={handleFormSave}
           editingBill={editingBill}
           isLoading={isSaving}

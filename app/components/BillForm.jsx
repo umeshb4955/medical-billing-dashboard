@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@mui/material';
+import { TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Paper, CircularProgress } from '@mui/material';
 import { Trash2, Plus } from 'lucide-react';
 
 export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }) {
@@ -239,7 +239,7 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
           )}
         </div>
       </DialogContent>
-      <DialogActions sx={{ backgroundColor: 'rgba(30, 27, 75, 0.95)', p: 2 }}>
+      <DialogActions sx={{ backgroundColor: 'rgba(30, 27, 75, 0.95)', p: 2, gap: 1 }}>
         <Button onClick={onClose} disabled={isLoading} sx={{ color: '#c7d2fe' }}>
           Cancel
         </Button>
@@ -251,8 +251,12 @@ export function BillFormDialog({ open, onClose, onSave, editingBill, isLoading }
             background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
             color: 'white',
             fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
           }}
         >
+          {isLoading && <CircularProgress size={18} sx={{ color: 'white' }} />}
           {isLoading ? 'Saving...' : 'Save Bill'}
         </Button>
       </DialogActions>

@@ -52,6 +52,7 @@ export async function PUT(req, { params }) {
 
 export async function DELETE(req, { params }) {
   try {
+    const db = await dbPromise;
     const id = params.id;
     
     // Delete items first (due to foreign key)
@@ -63,6 +64,7 @@ export async function DELETE(req, { params }) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error('DELETE /api/bills/[id] error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

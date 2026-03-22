@@ -4,9 +4,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node open-chrome.js & next dev",
+    "dev:no-browser": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -28,6 +30,6 @@
     "tailwindcss": "^3.4.1"
   },
   "engines": {
-    "node": "18.x"
+    "node": ">=18.x"
   }
 }
