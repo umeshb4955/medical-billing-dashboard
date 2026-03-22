@@ -13,7 +13,16 @@ export async function GET() {
       const billsWithItems = await Promise.all(
         bills.map(async (bill) => {
           const items = await db.collection('billItems').find({ billId: bill._id }).toArray();
-          return { ...bill, id: bill._id, items };
+          return {
+            ...bill,
+            id: bill._id.toString(), // Convert ObjectId to string
+            _id: undefined, // Remove _id to avoid duplication
+            items: items.map(item => ({
+              ...item,
+              _id: undefined,
+              billId: undefined
+            }))
+          };
         })
       );
       return NextResponse.json(billsWithItems);
@@ -70,7 +79,7 @@ export async function POST(req) {
         await billItemsCollection.insertMany(items);
       }
       
-      return NextResponse.json({ success: true, billId });
+      return NextResponse.json({ success: true, billId: billId.toString() });
     }
     
     // For SQLite (local)
